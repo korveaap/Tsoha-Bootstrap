@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+  
+  <h1>Tervetuloa Muistilistasovellukseen</h1>
+  <!-- Kaikki lomakkeen elementit form-tagin sisään -->
+  <h2>Kirjaudu sisään käyttääksesi sovellusta</h2>
+  <form>
+    <!-- Tekstikenttä käyttäjätunnukselle -->
+    <div class="form-group">
+      <label>Käyttäjätunnus</label>
+      <input class="form-control" type="text">
+    </div>
+
+    <!-- Salasanakenttä salasanalle -->
+    <div class="form-group">
+      <label>Salasana</label>
+      <input class="form-control" type="password">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>
+  </form>
+{% endblock %}
