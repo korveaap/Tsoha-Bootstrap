@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Tehtävän tiedot</h1>
+  <h3>Tehtävän nimi: Tehtävä Tsoha viikko 2</h3>  
+  <h3>Tehtävän prioriteetti: {{task.PriorityClassName}}</h3>
+  <h3>Tehtävän kuvaus: {{task.TaskDescription}}</h3> 
+
+  <br><br>
+  <a href="{{base_path}}/task">Takaisin tehtävälistaan</a>
+  
+{% endblock %}

@@ -1,5 +1,5 @@
 <?php
-
+   
   class HelloWorldController extends BaseController{
 
     public static function index(){
@@ -8,8 +8,11 @@
     }
 
     public static function sandbox(){
-      // Testaa koodiasi täällä
-      View::make('helloworld.html');
+      $t1 = Task::find(1);
+      $tasks = Task::all();
+      // Kint-luokan dump-metodi tulostaa muuttujan arvon
+      Kint::dump($tasks);
+      Kint::dump($t1);
     }
 
     public static function tasklist(){
