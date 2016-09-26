@@ -11,7 +11,8 @@
       <tr>
         <th>Tehtävä</th>
         <th>Luokat</th>
-        <th>Tärkeysaste</th>        
+        <th>Prioriteetti</th>
+        <th></th>        
       </tr>
     </thead>
 
@@ -19,8 +20,9 @@
       {% for task in tasks %}
       <tr>
         <td><a href="{{base_path}}/task/show/{{task.TaskKey}}">{{task.TaskName}}</a></td>
-        <td>Luokka</td>
-        <td>{{task.PriorityClassName}}</td>        
+        <td>{{task.TaskClassName}}</td>
+        <td>{{task.PriorityClassName}}</td>
+        <td><a href="{{base_path}}/task/delete/{{task.TaskKey}}" class="btn btn-danger">Poista</a></td>       
       </tr>
       {% endfor %}
     </tbody>

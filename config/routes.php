@@ -1,7 +1,7 @@
 <?php
 
   $routes->get('/', function() {
-    HelloWorldController::index();
+    TaskController::tasklist();
   });
 
   $routes->get('/hiekkalaatikko', function() {
@@ -10,6 +10,10 @@
 
   $routes->get('/task', function() {
     TaskController::tasklist();
+  });
+
+  $routes->get('/task/delete/:key', function($key) {
+    TaskController::delete($key);
   });
 
   $routes->get('/task/show/:key', function($key){

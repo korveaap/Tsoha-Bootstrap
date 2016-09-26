@@ -4,19 +4,24 @@
 class Task extends BaseModel{
   
   
-  public $TaskKey, $PriorityClassKey, $TaskName, $TaskDescription, $PriorityClassName;  
+  public $TaskKey, $PriorityClassKey, $TaskName, $TaskDescription, $PriorityClassName,$TaskClassName,$TaskClassKey,$PersonKey,$TaskClasses;  
   public function __construct($attributes){
     parent::__construct($attributes);
   }
 
   public static function all(){
     
-    $query = DB::connection()->prepare('SELECT t.TaskKey as taskkey, t.TaskName as taskname, t.PriorityClassKey as priorityclasskey, pc.PriorityClassName as priorityclassname 
+    $query = DB::connection()->prepare('SELECT t.TaskKey as taskkey, t.TaskName as taskname, t.PriorityClassKey as priorityclasskey, pc.PriorityClassName as priorityclassname,
+                                               array_to_string(array_agg(tc.TaskClassName),\',\') as taskclassname  
                                                 
                                         FROM Task t 
-                                        JOIN PriorityClass pc 
-                                        ON t.PriorityClassKey = pc.PriorityClassKey
-                                        ORDER BY pc.sortorder');    
+                                        JOIN PriorityClass pc ON t.PriorityClassKey = pc.PriorityClassKey
+                                        JOIN TaskClassOfTask tct on tct.TaskKey = t.TaskKey  
+                                        JOIN TaskClass tc on tc.TaskClassKey = tct.TaskClassKey
+                                        GROUP BY t.TaskKey, t.TaskName, t.PriorityClassKey, pc.PriorityClassName,pc.SortOrder
+                                        ORDER BY pc.sortorder'); 
+
+                                         
     $query->execute();    
     $rows = $query->fetchAll();
     $tasks = array();
@@ -27,7 +32,8 @@ class Task extends BaseModel{
         'TaskKey' => $row['taskkey'],
         'TaskName' => $row['taskname'],
         'PriorityClassName' => $row['priorityclassname'],
-        'PriorityClassKey' => $row['priorityclasskey']       
+        'PriorityClassKey' => $row['priorityclasskey'],
+        'TaskClassName' => $row['taskclassname']       
         
       ));
     }
@@ -37,11 +43,16 @@ class Task extends BaseModel{
 
   public static function find($TaskKey){
     $query = DB::connection()->prepare('SELECT t.TaskKey as taskkey, t.TaskName as taskname, t.taskdescription as taskdescription, t.PriorityClassKey as priorityclasskey, 
-                                               pc.PriorityClassName as priorityclassname  
-                                        FROM Task t
-                                        JOIN PriorityClass pc 
-                                        ON t.PriorityClassKey = pc.PriorityClassKey 
-                                        WHERE TaskKey = :TaskKey LIMIT 1');
+                                               pc.PriorityClassName as priorityclassname,
+                                               array_to_string(array_agg(tc.TaskClassName),\',\') as taskclassname                                                 
+                                        FROM Task t 
+                                        JOIN PriorityClass pc ON t.PriorityClassKey = pc.PriorityClassKey
+                                        JOIN TaskClassOfTask tct on tct.TaskKey = t.TaskKey  
+                                        JOIN TaskClass tc on tc.TaskClassKey = tct.TaskClassKey
+                                        WHERE t.TaskKey = :TaskKey 
+                                        GROUP BY t.TaskKey, t.TaskName, t.PriorityClassKey, pc.PriorityClassName,pc.SortOrder, t.taskdescription');
+                                        
+                                        
     $query->execute(array('TaskKey' => $TaskKey));
     $row = $query->fetch();
 
@@ -51,7 +62,8 @@ class Task extends BaseModel{
         'TaskName' => $row['taskname'],
         'PriorityClassKey' => $row['priorityclasskey'],
         'PriorityClassName' => $row['priorityclassname'],
-        'TaskDescription' => $row['taskdescription']      
+        'TaskDescription' => $row['taskdescription'],
+        'TaskClassName' => $row['taskclassname']      
       ));
 
       return $task;
@@ -60,31 +72,35 @@ class Task extends BaseModel{
     return null;
   }
 
-  public static function store(){
-    
-    $params = $_POST;    
-    $task = new Task(array(
-      'TaskName' => $params['TaskName'],
-      'TaskDescription' => $params['TaskDescription'],
-      'PriorityClassKey' => $params['PriorityClassKey'],
-      'TaskClassName' => $params['TaskClassName']
-    ));
-
-    
-    $task->save();
-
-    
-    Redirect::to('/task/');
-  }
+  
 
 
   
   public function save(){
     
-    $query = DB::connection()->prepare('INSERT INTO Task (TaskName, PriorityClassKey, TaskDescription, PersonKey) VALUES (:TaskName, :PriorityClassKey, :TaskDescription, :PersonKey) ');
+    $query_task = DB::connection()->prepare('INSERT INTO Task (TaskName, PriorityClassKey, TaskDescription, PersonKey) VALUES (:TaskName, :PriorityClassKey, :TaskDescription, :PersonKey) RETURNING TaskKey ');
     
-    $query->execute(array('TaskName' => $this->TaskName, 'PriorityClassKey' => $this->PriorityClassKey, 'TaskDescription' => $this->TaskDescription, 'PersonKey' => 1));
+    $query_task->execute(array('TaskName' => $this->TaskName, 'PriorityClassKey' => $this->PriorityClassKey, 'TaskDescription' => $this->TaskDescription, 'PersonKey' => 1));
+
+    $row = $query_task->fetch();
+    $this->TaskKey = $row['taskkey'];
+
+    foreach ($this->TaskClasses as $tckey) {
+      $query_taskclass = DB::connection()->prepare('INSERT INTO TaskClassOfTask (TaskKey, TaskClassKey) VALUES (:TaskKey, :TaskClassKey) ');
+      $query_taskclass->execute(array('TaskKey' => $this->TaskKey, 'TaskClassKey' => $tckey)); 
+    }
+
     
+    
+  }
+
+  public function delete($TaskKey) {
+
+      $query_taskclass = DB::connection()->prepare('DELETE FROM TaskClassOfTask WHERE TaskKey = :TaskKey');
+      $query_taskclass->execute(array('TaskKey' => $TaskKey));
+
+      $query_task = DB::connection()->prepare('DELETE FROM Task WHERE TaskKey = :TaskKey');
+      $query_task->execute(array('TaskKey' => $TaskKey));
   }
 
 

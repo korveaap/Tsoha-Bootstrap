@@ -11,7 +11,31 @@ class TaskController extends BaseController{
   	} 
 
   	public static function add(){ 
-    	View::make('task/task_new.html');
+    	$priorityclasses = PriorityClass::all();
+    	$taskclasses = TaskClass::all();
+    	View::make('task/task_new.html', array('priorityclasses'=>$priorityclasses, 'taskclasses'=>$taskclasses));
   	}  
+
+  	public static function delete($key){
+  		Task::delete($key);
+  		Redirect::to('/task');
+    }
+
+  	public static function store(){
+    
+	    $params = $_POST;    
+	    $task = new Task(array(
+	      'TaskName' => $params['TaskName'],
+	      'TaskDescription' => $params['TaskDescription'],
+	      'PriorityClassKey' => $params['PriorityClassKey'],
+	      'TaskClasses' => $params['TaskClassKey']
+	    ));
+
+	    //Kint::dump($params);
+	    $task->save();
+
+	    
+	    Redirect::to('/task');
+  }
 
 }

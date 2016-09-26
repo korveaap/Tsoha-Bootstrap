@@ -1,22 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
   <h1>Uusi tehtävä</h1>
-  <br>
-  Voit luoda uuden tehtävän allaolevalla lomakkeella
-  <br>
-  <form method="post" action="{{base_path}}/task>
+  <hr>
+  <form method="post" action="{{base_path}}/task">
     
     <div class="form-group">
       <label>Otsikko</label>
       <input class="form-control" name="TaskName" type="text">
     </div>
     <div class="form-group">
-      <label>Tärkeysaste</label>
-      <input class="form-control" name="PriorityClassName" type="text">
+      <label>Prioriteetti</label>
+      <select name="PriorityClassKey" class="form-control">
+        {% for pc in priorityclasses %}
+        <option value="{{pc.PriorityClassKey}}">{{pc.PriorityClassName}}</option>        
+        {% endfor %}        
+      </select>
     </div>
+
     <div class="form-group">
-      <label>Luokat</label>
-      <input class="form-control" name="TaskClassName" type="text">
+      <label>Luokat (voit valita useamman pitämällä ctrl- näppäintä pohjassa)</label>
+      <select multiple name="TaskClassKey[]" class="form-control">
+        {% for pc in taskclasses %}
+        <option value="{{pc.TaskClassKey}}">{{pc.TaskClassName}}</option>        
+        {% endfor %}        
+      </select>
     </div>
     <div class="form-group">
       <label>Kuvaus</label>
@@ -24,9 +31,8 @@
       </textarea>
     </div>
     <div class="form-group">
-      <button type="submit" class="btn btn-success">Tallenna ja palaa listaan</button> 
-    
+      <button type="submit" class="btn btn-success">Tallenna ja palaa listaan</button>  
       <a href="{{base_path}}/task" class="btn btn-danger">Palaa tallentamatta</a>
-    </div>
+    </div>    
   </form>
 {% endblock %}
