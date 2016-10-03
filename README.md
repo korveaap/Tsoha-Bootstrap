@@ -1,4 +1,4 @@
-# Tietokantasovelluksen esittelysivu
+﻿# Tietokantasovelluksen esittelysivu
 
 Yleisiä linkkejä:
 
@@ -9,6 +9,6 @@ Yleisiä linkkejä:
 
 Muistilista [Linkki valmiiseen aiheeseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Muistilista.html)
 
-## Testikäyttäjätunnukset (käyttäjänimi/salasana) 
-teppo/tt
+## Testikäyttäjät (käyttäjänimi/salasana) 
+teppo/tt,
 Kati/kk
