@@ -1,8 +1,12 @@
 <?php
 class TaskController extends BaseController{
 	public static function tasklist(){    
+    	self::check_logged_in();
+    	$user = self::get_user_logged_in();			
+    		
     	$tasks = Task::all();    
-    	View::make('task/tasklist.html', array('tasks' => $tasks));
+    	View::make('task/tasklist.html', array('tasks' => $tasks, 'user_logged_in' => $user));
+   			
   	} 
 
   	public static function show($key){    
@@ -16,26 +20,68 @@ class TaskController extends BaseController{
     	View::make('task/task_new.html', array('priorityclasses'=>$priorityclasses, 'taskclasses'=>$taskclasses));
   	}  
 
+  	public static function modify($key){    
+    	$priorityclasses = PriorityClass::all();
+    	$taskclasses = TaskClass::all();
+    	$task = Task::find($key);
+
+    	$attributes = array(
+	      'TaskKey' => $task->TaskKey,
+	      'TaskName' => $task->TaskName,
+	      'TaskDescription' => $task->TaskDescription,
+	      'PriorityClassKey' => $task->PriorityClassKey,
+	      'TaskClasses' =>$task->TaskClasses
+	      );
+
+    	View::make('task/task_modify.html', array( 'attributes' => $attributes, 'priorityclasses'=>$priorityclasses, 'taskclasses'=>$taskclasses));
+  	} 
+
   	public static function delete($key){
   		Task::delete($key);
   		Redirect::to('/task');
     }
 
-  	public static function store(){
+  	public static function store($type){
     
-	    $params = $_POST;    
-	    $task = new Task(array(
+	    $params = $_POST; 
+	    //$taskclasses[] = array(); 
+	    if (empty($params['TaskClassKey'])) {
+	    	//$taskclasses[] = $params['TaskClassKey'];
+	    	$params['TaskClassKey'] = array();
+	    }
+
+
+
+	    $attributes = array(
 	      'TaskName' => $params['TaskName'],
 	      'TaskDescription' => $params['TaskDescription'],
 	      'PriorityClassKey' => $params['PriorityClassKey'],
-	      'TaskClasses' => $params['TaskClassKey']
-	    ));
+	      'TaskClasses' => $params['TaskClassKey'],
+
+	    );
+	    $task = new Task($attributes);
 
 	    //Kint::dump($params);
-	    $task->save();
+	    $errors = $task->errors();
 
-	    
-	    Redirect::to('/task');
+	    //Kint::dump($errors);
+
+
+ 		if(count($errors) == 0){
+    	    if ($type == 'insert') {
+    	    	$task->save();
+    	    } else {
+    	    	$task->TaskKey = $params['TaskKey']; 
+    	    	$task->update();
+    	    }	    
+	    	Redirect::to('/task');
+	    } else {
+
+
+	    	$priorityclasses = PriorityClass::all();
+    		$taskclasses = TaskClass::all();
+	    	View::make('task/task_new.html', array('errors' => $errors, 'attributes' => $attributes, 'priorityclasses'=>$priorityclasses, 'taskclasses'=>$taskclasses));
+	    }
   }
 
 }

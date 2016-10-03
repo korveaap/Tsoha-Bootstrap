@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Käyttäjän Aapo tehtävälista</h1>
+  <h1>Käyttäjän {{user_logged_in.FirstName}} {{user_logged_in.LastName}} tehtävälista</h1>
+
 
   <p>
     <a href="{{base_path}}/task/add" class="btn btn-success">Lisää tehtävä</a>
@@ -12,6 +13,7 @@
         <th>Tehtävä</th>
         <th>Luokat</th>
         <th>Prioriteetti</th>
+        
         <th></th>        
       </tr>
     </thead>
@@ -22,7 +24,7 @@
         <td><a href="{{base_path}}/task/show/{{task.TaskKey}}">{{task.TaskName}}</a></td>
         <td>{{task.TaskClassName}}</td>
         <td>{{task.PriorityClassName}}</td>
-        <td><a href="{{base_path}}/task/delete/{{task.TaskKey}}" class="btn btn-danger">Poista</a></td>       
+        <td><a href="{{base_path}}/task/modify/{{task.TaskKey}}" class="btn btn-success">Muokkaa</a> <a href="{{base_path}}/task/delete/{{task.TaskKey}}" class="btn btn-danger">Poista</a></td>       
       </tr>
       {% endfor %}
     </tbody>

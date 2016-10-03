@@ -9,12 +9,12 @@ class PriorityClass extends BaseModel{
     
     $query = DB::connection()->prepare('SELECT priorityclasskey, priorityclassname, sortorder 
                                                 
-                                        FROM PriorityClass 
+                                        FROM PriorityClass where PersonKey = :PersonKey
                                         
                                         ORDER BY sortorder'); 
 
                                          
-    $query->execute();    
+    $query->execute(array('PersonKey' => $_SESSION['user']));    
     $rows = $query->fetchAll();
     $priorityclasses = array();
 

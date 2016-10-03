@@ -7,4 +7,8 @@ Yleisiä linkkejä:
 
 ## Työn aihe
 
-Muistilista [Linkki valmiiseen aiheeseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Muistilista.html) 
+Muistilista [Linkki valmiiseen aiheeseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Muistilista.html)
+
+## Testikäyttäjätunnukset (käyttäjänimi/salasana) 
+teppo/tt
+Kati/kk

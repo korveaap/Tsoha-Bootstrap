@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>Uusi tehtävä</h1>
+  <h1>Muokkaa tehtävää</h1>
   <hr>
   {% if errors %}
     <div class="alert alert-danger">
@@ -11,8 +11,8 @@
       </ul>
     </div>
   {% endif %}
-  <form method="post" action="{{base_path}}/task/insert">
-    
+  <form method="post" action="{{base_path}}/task/update">
+    <input class="hidden" value="{{attributes.TaskKey}}" name="TaskKey">
     <div class="form-group">
       <label>Otsikko</label>
       <input class="form-control" value="{{attributes.TaskName}}" name="TaskName" type="text">

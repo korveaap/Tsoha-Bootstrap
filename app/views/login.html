@@ -1,18 +1,30 @@
+{% extends "base.html" %}
 {% block content %}
   
-  <input class="form-control" placeholder="Kirjaudu sisään käyttääksesi muistilistaa" type="text">
-  <!-- Kaikki lomakkeen elementit form-tagin sisään -->
-  <form>
-    <!-- Tekstikenttä käyttäjätunnukselle -->
+  <h1>Kirjaudu sisään käyttääksesi muistilistaa</h1>
+  <hr>
+  {% if error %}
+    <div class="alert alert-danger">
+      <ul>
+        
+          <li>{{error}}</li>
+        
+      </ul>
+    </div>
+  {% endif %}
+  
+
+  <form method="post" action="{{base_path}}/login">
+    
     <div class="form-group">
       <label>Käyttäjätunnus</label>
-      <input class="form-control" type="text">
+      <input class="form-control" name="username" value="{{username}}" type="text">
     </div>
 
     <!-- Salasanakenttä salasanalle -->
     <div class="form-group">
       <label>Salasana</label>
-      <input class="form-control" type="password">
+      <input class="form-control" name="password" type="password">
     </div>
 
     <button type="submit" class="btn btn-primary">Kirjaudu sisään</button>

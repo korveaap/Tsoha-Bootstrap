@@ -6,6 +6,7 @@
 
     public function __construct($attributes = null){
       // Käydään assosiaatiolistan avaimet läpi
+      
       foreach($attributes as $attribute => $value){
         // Jos avaimen niminen attribuutti on olemassa...
         if(property_exists($this, $attribute)){
@@ -18,12 +19,34 @@
     public function errors(){
       // Lisätään $errors muuttujaan kaikki virheilmoitukset taulukkona
       $errors = array();
+      
 
       foreach($this->validators as $validator){
-        // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
+        // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon        ;
+        $errors = array_merge($errors,$this->{$validator}());
       }
 
       return $errors;
     }
+
+
+    public function validate_string($string) {
+      
+      if($string == '' || $string == null){
+          
+        return true;  
+      }
+      return false;
+    }
+
+    public function validate_selection($arr) {
+      
+      if(count($arr)==0){
+          
+        return  true;
+      }
+      return false;
+    }
+
 
   }

@@ -1,0 +1,50 @@
+<?php
+
+class User extends BaseModel{
+	public $PersonKey, $FirstName, $LastName, $UserId, $Password;  
+  	public function __construct($attributes){
+    parent::__construct($attributes);
+    	$this->validators = array('validate_userid');
+  	}
+
+  	public static function authenticate($UserId,$Password){
+  		$query = DB::connection()->prepare('SELECT * FROM Person WHERE userid = :userid AND password = :password LIMIT 1');
+		$query->execute(array('userid' => $UserId, 'password' => $Password));
+		$row = $query->fetch();
+		if($row){
+  			$user = new User(array(        
+        	'PersonKey' => $row['personkey'],
+            'FirstName' => $row['firstname'], 
+            'LastName' => $row['lastname'], 
+            'UserId' => $row['userid'] 
+      	));
+
+      		return $user;
+		}else{
+  			return null; 
+		}
+				
+  	}
+  	public static function find($personkey){
+	    $query = DB::connection()->prepare('SELECT * FROM Person WHERE personkey = :personkey LIMIT 1');
+	                                        
+	                                        
+	    $query->execute(array('personkey' => $personkey));
+	    $row = $query->fetch();
+
+	    if($row){
+  			$user = new User(array(        
+        	'PersonKey' => $row['personkey'],
+            'FirstName' => $row['firstname'], 
+            'LastName' => $row['lastname'], 
+            'UserId' => $row['userid'] 
+      	));
+
+      		return $user;
+		}else{
+  			return null; 
+		}
+	}
+
+
+}
