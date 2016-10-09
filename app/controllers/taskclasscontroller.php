@@ -1,0 +1,58 @@
+<?php
+class TaskClassController extends BaseController{
+	public static function taskclasslist(){    
+    	self::check_logged_in();
+    	$user = self::get_user_logged_in();			
+    		
+    	$taskclasses = TaskClass::all();    
+    	View::make('taskclass/taskclasslist.html', array('taskclasses' => $taskclasses, 'user_logged_in' => $user));
+   			
+  	} 
+
+  	public static function delete($key){  		 		
+
+  		
+  		$errors = TaskClass::delete($key);
+  		Redirect::to('/taskclass',array('errors' => $errors));
+    }
+
+    public static function add(){     	
+    	View::make('taskclass/taskclass_new.html');
+  	}  
+
+  	
+
+
+
+
+  	public static function store(){
+    
+	    $params = $_POST;  
+
+	    $attributes = array(
+	      'TaskClassName' => $params['TaskClassName'],
+	      'TaskClassDescription' => $params['TaskClassDescription']
+
+	    );
+
+	    
+	    $taskclass = new TaskClass($attributes);
+
+	    //Kint::dump($params);
+	    $errors = $taskclass->errors();
+
+	    //Kint::dump($errors);
+
+
+ 		if(count($errors) == 0){    	    
+    	   $taskclass->save();
+    	     
+	    	Redirect::to('/taskclass');    	    
+	    } else {
+
+	    	
+	       View::make('taskclass/taskclass_new.html', array('errors' => $errors, 'attributes' => $attributes));
+	    	
+	    }
+  }
+}

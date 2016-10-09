@@ -4,6 +4,7 @@ class TaskClass extends BaseModel{
   public $TaskClassKey, $TaskClassName, $TaskClassDescription, $PersonKey;  
   public function __construct($attributes){
     parent::__construct($attributes);
+    $this->validators = array('validate_taskclassname', 'validate_existing');
   }
   public static function all(){
     
@@ -31,4 +32,66 @@ class TaskClass extends BaseModel{
 
     return $taskclasses;
   }
+
+  public function save(){
+    
+    $query = DB::connection()->prepare('INSERT INTO TaskClass (TaskClassName, TaskClassDescription, PersonKey) VALUES (:TaskClassName, :TaskClassDescription, :PersonKey) RETURNING TaskClassKey ');
+    
+    $query->execute(array('TaskClassName' => $this->TaskClassName, 'TaskClassDescription' => $this->TaskClassDescription, 'PersonKey' => $_SESSION['user']));
+
+    $row = $query->fetch();
+    $this->TaskClassKey = $row['taskclasskey'];    
+    
+    
+  }
+
+  public function delete($TaskClassKey) {
+      
+      $query_check =  DB::connection()->prepare('SELECT count(*) as cnt from taskclassoftask where TaskClassKey = :TaskClassKey');
+      $query_check->execute(array('TaskClassKey' => $TaskClassKey));
+
+      $row = $query_check->fetch();
+
+
+
+      $errors = array();
+      if($row['cnt']!=0){
+        $errors[] = 'Tehtäväluokka on käytössä tehtävällä, ei saa poistaa!';
+        return $errors;
+      }
+      
+
+      $query = DB::connection()->prepare('DELETE FROM TaskClass WHERE TaskClassKey = :TaskClassKey');
+      $query->execute(array('TaskClassKey' => $TaskClassKey));
+  }
+
+  public function validate_taskclassname() {
+    
+    $errors = array();
+    if($this->validate_string($this->TaskClassName)==true){
+      $errors[] = 'Tehtäväluokan nimi ei saa olla tyhjä!';
+    }
+    return $errors;
+      
+  }
+
+  public function validate_existing() {
+      $errors = array();
+      
+      
+      $query_check =  DB::connection()->prepare('SELECT count(*) as cnt from TaskClass where TaskClassName = :TaskClassName and PersonKey = :PersonKey ');
+      $query_check->execute(array('TaskClassName' => $this->TaskClassName, 'PersonKey' => $_SESSION['user']));
+      
+
+      $row = $query_check->fetch();
+
+      if($row['cnt']!=0){
+          $errors[] = 'Tehtäväluokan nimi on jo olemassa!'; 
+      }
+
+      
+
+      return $errors;
+   }
+
 }

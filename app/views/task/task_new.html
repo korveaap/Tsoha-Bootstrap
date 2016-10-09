@@ -15,7 +15,7 @@
     
     <div class="form-group">
       <label>Otsikko</label>
-      <input class="form-control" value="{{attributes.TaskName}}" name="TaskName" type="text">
+      <input maxlength="50" class="form-control" value="{{attributes.TaskName}}" name="TaskName" type="text">
     </div>
     <div class="form-group">
       <label>Prioriteetti</label>
@@ -44,7 +44,7 @@
     </div>
     <div class="form-group">
       <label>Kuvaus</label>
-      <textarea class="form-control" name="TaskDescription">{{attributes.TaskDescription}}</textarea>
+      <textarea maxlength="1000" class="form-control" name="TaskDescription">{{attributes.TaskDescription}}</textarea>
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-success">Tallenna ja palaa listaan</button>  

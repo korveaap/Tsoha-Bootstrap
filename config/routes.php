@@ -43,6 +43,46 @@
     UserController::logout();
   });
 
+  $routes->get('/priorityclass', function() {
+    PriorityClassController::priorityclasslist();
+  });
+
+  $routes->get('/priorityclass/delete/:key', function($key) {
+    PriorityClassController::delete($key);
+  });
+
+  $routes->get('/priorityclass/add', function(){
+    PriorityClassController::add();
+  });
+
+  $routes->post('/priorityclass/update', function(){
+    PriorityClassController::store('update');
+  });
+
+   $routes->get('/priorityclass/modify/:key', function($key){
+    PriorityClassController::modify($key);
+  });
+
+  $routes->post('/priorityclass/insert', function(){
+    PriorityClassController::store('insert');
+  });
+
+  $routes->get('/taskclass', function() {
+    TaskClassController::taskclasslist();
+  });
+
+  $routes->get('/taskclass/delete/:key', function($key) {
+    TaskClassController::delete($key);
+  });
+
+  $routes->get('/taskclass/add', function(){
+    TaskClassController::add();
+  });
+
+  
+  $routes->post('/taskclass/insert', function(){
+    TaskClassController::store();
+  });
 
   $routes->get('/task/delete/:key', function($key) {
     TaskController::delete($key);

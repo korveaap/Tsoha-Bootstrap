@@ -17,7 +17,7 @@
       // Toteuta kirjautumisen tarkistus tähän.
       // Jos käyttäjä ei ole kirjautunut sisään, ohjaa hänet toiselle sivulle (esim. kirjautumissivulle).
       if(isset($_SESSION['user'])==false) {
-        View::make('/login.html');
+        View::make('/login.html', array('message' => 'Kirjaudu ensin sisään!'));
       }
 
     }

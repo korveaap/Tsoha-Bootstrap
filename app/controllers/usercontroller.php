@@ -5,8 +5,8 @@ class UserController extends BaseController{
   	}
 
 	public static function logout(){      
-      
-      View::make('/login.html');
+      $_SESSION['user'] = null;
+      Redirect::to('/login', array('message' => 'Olet kirjautunut ulos!'));
   	}
 
   	public static function handle_login(){

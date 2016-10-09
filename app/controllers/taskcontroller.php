@@ -56,10 +56,15 @@ class TaskController extends BaseController{
 	      'TaskName' => $params['TaskName'],
 	      'TaskDescription' => $params['TaskDescription'],
 	      'PriorityClassKey' => $params['PriorityClassKey'],
-	      'TaskClasses' => $params['TaskClassKey'],
+	      'TaskClasses' => $params['TaskClassKey']
+
 
 	    );
 	    $task = new Task($attributes);
+
+	    if (empty($params['TaskKey'])==false) {
+	    	$attributes['TaskKey'] = $params['TaskKey'];
+	    }
 
 	    //Kint::dump($params);
 	    $errors = $task->errors();
@@ -80,7 +85,13 @@ class TaskController extends BaseController{
 
 	    	$priorityclasses = PriorityClass::all();
     		$taskclasses = TaskClass::all();
-	    	View::make('task/task_new.html', array('errors' => $errors, 'attributes' => $attributes, 'priorityclasses'=>$priorityclasses, 'taskclasses'=>$taskclasses));
+	    	if ($type == 'insert') {
+    	    	View::make('task/task_new.html', array('errors' => $errors, 'attributes' => $attributes, 'priorityclasses'=>$priorityclasses, 'taskclasses'=>$taskclasses));
+    	    } else {
+    	    	
+    	    	View::make('task/task_modify.html', array('errors' => $errors, 'attributes' => $attributes, 'priorityclasses'=>$priorityclasses, 'taskclasses'=>$taskclasses));
+    	    
+    	    }
 	    }
   }
 

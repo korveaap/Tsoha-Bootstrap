@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Käyttäjän {{user_logged_in.FirstName}} {{user_logged_in.LastName}} tehtäväluokkalista</h1>
+
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <p>
+    <a href="{{base_path}}/taskclass/add" class="btn btn-success">Lisää tehtäväluokka</a>
+  </p>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Nimi</th>
+        <th>Kuvaus</th>  
+        
+        <th></th>        
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for taskclass in taskclasses %}
+      <tr>
+        <td>{{taskclass.TaskClassName}}</td>
+        <td>{{taskclass.TaskClassDescription}}</td>        
+        <td><a href="{{base_path}}/taskclass/delete/{{taskclass.TaskClassKey}}" class="btn btn-danger">Poista</a></td>       
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

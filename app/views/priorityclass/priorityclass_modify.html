@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Muokkaa prioriteettiluokkaa</h1>
+  <hr>
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+  <form method="post" action="{{base_path}}/priorityclass/update">
+    <input class="hidden" value="{{attributes.PriorityClassKey}}" name="PriorityClassKey">    
+    <div class="form-group">
+      <label>Nimi</label>
+      <input maxlength="50" class="form-control" value="{{attributes.PriorityClassName}}" name="PriorityClassName" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Lajittelujärjestysnumero</label>
+      <input class="form-control" value="{{attributes.SortOrder}}" name="SortOrder" type="text">
+    </div>
+    
+    <div class="form-group">
+      <button type="submit" class="btn btn-success">Tallenna ja palaa listaan</button>  
+      <a href="{{base_path}}/priorityclass" class="btn btn-danger">Palaa tallentamatta</a>
+    </div>    
+  </form>
+{% endblock %}

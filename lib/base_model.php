@@ -32,11 +32,21 @@
 
     public function validate_string($string) {
       
-      if($string == '' || $string == null){
+      if(preg_replace('/\s/', '', $string) == '' || $string == null ){
           
         return true;  
       }
       return false;
+    }
+
+    public function validate_integer($string) {
+      if (is_numeric($string)) {
+        if(is_integer($string+1)){
+            
+          return false;  
+        }
+      }
+      return true;
     }
 
     public function validate_selection($arr) {
