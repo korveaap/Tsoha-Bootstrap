@@ -1,4 +1,20 @@
 <?php
+/**
+*Kontrolleriluokka tehtäväluokkien käsittelyä varten
+*
+*Sisältää metodit:
+*
+*taskclasslist(): tehtävälistan näyttäminen
+*
+*delete($key): poisto
+*
+*add(): lisäyssivun näyttäminen
+*
+*store(): tietueen lisäys 
+*
+*/
+
+
 class TaskClassController extends BaseController{
 	public static function taskclasslist(){    
     	self::check_logged_in();
@@ -19,10 +35,6 @@ class TaskClassController extends BaseController{
     public static function add(){     	
     	View::make('taskclass/taskclass_new.html');
   	}  
-
-  	
-
-
 
 
   	public static function store(){

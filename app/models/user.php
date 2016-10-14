@@ -1,4 +1,14 @@
 <?php
+/**
+*Malliluokka käyttäjtietojen käsittelyä varten
+*
+*Sisältää metodit:
+*
+*authenticate($UserId,$Password) - käyttäjän autentikointi
+*
+*find($personkey) - yhden käyttäjän haku tietokannasta 
+*/
+
 
 class User extends BaseModel{
 	public $PersonKey, $FirstName, $LastName, $UserId, $Password;  

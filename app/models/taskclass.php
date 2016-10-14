@@ -1,4 +1,20 @@
 <?php
+/**
+*Malliluokka tehtäväluokkien käsittelyä varten
+*
+*Sisältää metodit:
+*
+*all() - kaikkien tehtäväluokkien haku tietokannasta
+*
+*save() - uuden tehtäväluokan luonti tietokantaan 
+*
+*delete() - tehtäväluokan poisto
+*
+*validate_taskclassname() - tehtäväluokan nimen pituuden validointi
+*
+*validate_existing() - tehtäväluokan nimen olemassaolon validointi
+*/
+
 
 class TaskClass extends BaseModel{
   public $TaskClassKey, $TaskClassName, $TaskClassDescription, $PersonKey;  

@@ -1,5 +1,27 @@
 
 <?php
+/**
+*Malliluokka tehtävien käsittelyä varten
+*
+*Sisältää metodit:
+*
+*all() - kaikkien tehtävien haku tietokannasta
+*
+*find($TaskKey) - yhden tehtävän haku tietokannasta
+*
+*save() - uuden tehtävän luonti tietokantaan 
+*
+*update() - tehtävän päivittäminen
+*
+*delete() - tehtävän poisto
+*
+*validatetaskname() - tehtävän nimen validointi
+*
+*validate_taskclass() - tehtäväluokan validointi
+*
+*validate_priorityclass() - prioriteettiluokan validointi
+*/
+
 
 class Task extends BaseModel{
   
@@ -7,7 +29,7 @@ class Task extends BaseModel{
   public $TaskKey, $PriorityClassKey, $TaskName, $TaskDescription, $PriorityClassName,$TaskClassName,$TaskClassKey,$PersonKey,$TaskClasses;  
   public function __construct($attributes){
     parent::__construct($attributes);
-    $this->validators = array('validate_taskname', 'validate_taskclass');
+    $this->validators = array('validate_taskname', 'validate_taskclass','validate_priorityclass');
   }
 
   public static function all(){
@@ -145,6 +167,15 @@ class Task extends BaseModel{
     }
     return $errors;
       
+  }
+
+  public function validate_priorityclass() {
+    
+    $errors = array();
+    if($this->validate_string($this->PriorityClassKey)==true){
+      $errors[] = 'Prioriteettiluokka pitää olla valittuna!';
+    }
+    return $errors;
   }
 
 

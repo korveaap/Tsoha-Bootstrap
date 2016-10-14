@@ -1,4 +1,17 @@
 <?php
+/**
+*Kontrolleriluokka käyttäjien käsittelyä varten
+*
+*Sisältää metodit:
+*
+*login(): kirjautumissivun näyttäminen
+*
+*logout(): uloskirjautuminen
+*
+*handle_login(): käyttäjän autentikointi ja tehtävälistan näyttäminen
+*/
+
+
 class UserController extends BaseController{
 	public static function login(){      
       View::make('/login.html');

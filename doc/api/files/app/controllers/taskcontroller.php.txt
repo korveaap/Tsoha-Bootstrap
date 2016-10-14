@@ -1,4 +1,22 @@
 <?php
+/**
+*Kontrolleriluokka tehtävien käsittelyä varten
+*
+*Sisältää metodit:
+*
+*tasklist(): tehtävälistan näyttäminen
+*
+*delete($key): poisto
+*
+*add(): lisäyssivun näyttäminen
+*
+*modify($key): muokkaussivun näyttäminen
+*
+*store($type): tietueen lisäys tai muokkaus, type- parametri määrää kumpi
+
+*/
+
+
 class TaskController extends BaseController{
 	public static function tasklist(){    
     	self::check_logged_in();
@@ -50,7 +68,9 @@ class TaskController extends BaseController{
 	    	$params['TaskClassKey'] = array();
 	    }
 
-
+      if (empty($params['PriorityClassKey'])) {
+        $params['PriorityClassKey'] = '';
+      }
 
 	    $attributes = array(
 	      'TaskName' => $params['TaskName'],

@@ -1,4 +1,22 @@
 <?php
+/**
+*Kontrolleriluokka prioriteettiluokkien käsittelyä varten
+*
+*Sisältää metodit:
+*
+*priorityclasslist(): prioriteettilistan näyttäminen
+*
+*delete($key): poisto
+*
+*add(): lisäyssivun näyttäminen
+*
+*modify($key): muokkaussivun näyttäminen
+*
+*store($type): tietueen lisäys tai muokkaus, type- parametri määrää kumpi
+
+*/
+
+
 class PriorityClassController extends BaseController{
 	public static function priorityclasslist(){    
     	self::check_logged_in();

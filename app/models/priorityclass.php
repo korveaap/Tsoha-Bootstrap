@@ -1,4 +1,26 @@
 <?php
+/**
+*Malliluokka prioriteettiluokkien käsittelyä varten
+*
+*Sisältää metodit:
+*
+*all() - kaikkien prioriteettiluokkien haku tietokannasta
+*
+*find($TaskKey) - yhden prioriteettiluokkan haku tietokannasta
+*
+*save() - uuden prioriteettiluokkan luonti tietokantaan 
+*
+*update() - prioriteettiluokkan päivittäminen
+*
+*delete() - prioriteettiluokkan poisto
+*
+*validate_priorityclassname() - prioriteettiluokan nimen pituuden validointi
+*
+*validate_sortorder_numeric() - järjestysnumeron numeerisuuden validointi
+*
+*validate_existing() - prioriteettiluokan nimen olemassaolon validointi
+*/
+
 
 class PriorityClass extends BaseModel{
   public $PriorityClassKey, $PriorityClassName, $SortOrder, $PersonKey;  
