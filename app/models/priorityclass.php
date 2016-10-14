@@ -148,8 +148,8 @@ class PriorityClass extends BaseModel{
         $query_check =  DB::connection()->prepare('SELECT count(*) as cnt from PriorityClass where PriorityClassName = :PriorityClassName and PersonKey = :PersonKey');
         $query_check->execute(array('PriorityClassName' => $this->PriorityClassName, 'PersonKey' => $_SESSION['user']));
       } else {
-        $query_check =  DB::connection()->prepare('SELECT count(*) as cnt from PriorityClass where PriorityClassName = :PriorityClassName and PersonKey = :PersonKey and PriorityClassKey != :PriorityClassKey');
-        $query_check->execute(array('PriorityClassName' => $this->PriorityClassName, 'PersonKey' => $_SESSION['user'], $this->PriorityClassKey));
+        $query_check =  DB::connection()->prepare('SELECT count(*) as cnt from PriorityClass where PriorityClassName = :PriorityClassName and PersonKey = :PersonKey and PriorityClassKey <> :PriorityClassKey');
+        $query_check->execute(array('PriorityClassName' => $this->PriorityClassName, 'PersonKey' => $_SESSION['user'], 'PriorityClassKey' => $this->PriorityClassKey));
       }
 
       $row = $query_check->fetch();
@@ -162,8 +162,8 @@ class PriorityClass extends BaseModel{
           $query_check =  DB::connection()->prepare('SELECT count(*) as cnt from PriorityClass where SortOrder = :SortOrder and PersonKey = :PersonKey');
           $query_check->execute(array('SortOrder' => $this->SortOrder, 'PersonKey' => $_SESSION['user']));
         } else {
-          $query_check =  DB::connection()->prepare('SELECT count(*) as cnt from PriorityClass where SortOrder = :SortOrder and PersonKey = :PersonKey and PriorityClassKey != :PriorityClassKey');
-          $query_check->execute(array('SortOrder' => $this->SortOrder, 'PersonKey' => $_SESSION['user'], $this->PriorityClassKey));
+          $query_check =  DB::connection()->prepare('SELECT count(*) as cnt from PriorityClass where SortOrder = :SortOrder and PersonKey = :PersonKey and PriorityClassKey <> :PriorityClassKey');
+          $query_check->execute(array('SortOrder' => $this->SortOrder, 'PersonKey' => $_SESSION['user'], 'PriorityClassKey' => $this->PriorityClassKey));
         }
         $row = $query_check->fetch();
 
